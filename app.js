@@ -1,11 +1,13 @@
 var key = `be2a1a44d8af209fcb6c606934dbfe16`;
 
+//Geolocation Options
 var options = {
   enableHighAccuracy: true,
   timeout: 5000,
   maximumAge: 0
 };
 
+//If coordinates are pulled succesfully
 function success(pos) {
   var crd = pos.coords;
   var lat = Number((crd.latitude).toFixed(1));
@@ -33,8 +35,9 @@ function error(err) {
   console.warn(`ERROR(${err.code}): ${err.message}`);
 };
 
-navigator.geolocation.getCurrentPosition(success, error, options);
+
 
 $(document).ready(function(){
-    console.log(key)
+  navigator.geolocation.getCurrentPosition(success, error, options);
+  console.log(key)
 })
