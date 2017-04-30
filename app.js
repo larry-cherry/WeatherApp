@@ -23,7 +23,7 @@ function success(pos) {
     cache: false,
   }).done(function(server_data){
     console.log("success" + server_data);
-    
+
     // debugger;
   }).fail(function(jqXHR, textStatus, errorThrown){
     console.log("fail" + errorThrown);
