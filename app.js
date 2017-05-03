@@ -10,15 +10,15 @@ var options = {
 //If coordinates are pulled succesfully
 function success(pos) {
   var crd = pos.coords;
-  var lat = Number((crd.latitude).toFixed(1));
-  var lon = Number((crd.longitude).toFixed(1));
+  var lat = Number((crd.latitude).toFixed(2));
+  var lon = Number((crd.longitude).toFixed(2));
   console.log('Your current position is:');
   console.log(`Latitude : ${lat}`);
   console.log(`Longitude: ${lon}`);
   console.log(`More or less ${crd.accuracy} meters.`);
 
   $.ajax({
-    url: `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=be2a1a44d8af209fcb6c606934dbfe16`,
+    url: `https://api.darksky.net/forecast/5b30c9a8f2a1996939817d496865c2eb/${lat},${lon}`,
     type: 'GET',
     cache: false,
   }).done(function(server_data){
@@ -39,5 +39,5 @@ function error(err) {
 
 $(document).ready(function(){
   navigator.geolocation.getCurrentPosition(success, error, options);
-  console.log(key)
+
 })
