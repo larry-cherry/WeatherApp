@@ -1,4 +1,12 @@
-var key = `be2a1a44d8af209fcb6c606934dbfe16`;
+// Following are variables used to display information
+var lat;
+var lon;
+var weatherInfo;
+var temp;
+var windS;
+var humidT;
+var summary;
+var icon;
 
 //Geolocation Options
 var options = {
@@ -7,37 +15,45 @@ var options = {
   maximumAge: 0
 };
 
-//If coordinates are pulled succesfully
-function success(pos) {
-  var crd = pos.coords;
-  var lat = Number((crd.latitude).toFixed(1));
-  var lon = Number((crd.longitude).toFixed(1));
-  console.log('Your current position is:');
-  console.log(`Latitude : ${lat}`);
-  console.log(`Longitude: ${lon}`);
-  console.log(`More or less ${crd.accuracy} meters.`);
-
+// AJAX request for weather info
+function getWeather() {
   $.ajax({
-    url: `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=be2a1a44d8af209fcb6c606934dbfe16`,
+    url: `https://api.darksky.net/forecast/5b30c9a8f2a1996939817d496865c2eb/${lat},${lon}`,
     type: 'GET',
     cache: false,
   }).done(function(server_data){
     console.log("success" + server_data);
-
-    // debugger;
+    weather = server_data;
+    temp = server_data["currently"]["temperature"]
+    WindS = server_data["currently"]["windSpeed"]
+    humidT = server_data["currently"]["humidity"]
+    icon = server_data["currently"]["icon"]
+    summary = server_data["currently"]["summary"]
   }).fail(function(jqXHR, textStatus, errorThrown){
     console.log("fail" + errorThrown);
     return "There was an issue with your request please try again.";;
   });
+}
+
+//If coordinates are pulled succesfully
+function success(pos) {
+  var crd = pos.coords;
+  lat = Number((crd.latitude).toFixed(2));
+  lon = Number((crd.longitude).toFixed(2));
+  console.log('Your current position is:');
+  console.log(`Latitude : ${lat}`);
+  console.log(`Longitude: ${lon}`);
+  console.log(`More or less ${crd.accuracy} meters.`);
+  getWeather();
 };
 
+//only runs if error occurs
 function error(err) {
   console.warn(`ERROR(${err.code}): ${err.message}`);
 };
 
-
-
 $(document).ready(function(){
   navigator.geolocation.getCurrentPosition(success, error, options);
-  console.log(key)
+
+
 })
