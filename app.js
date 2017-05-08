@@ -17,10 +17,12 @@ var options = {
 
 // AJAX request for weather info
 function getWeather() {
+  
   $.ajax({
-    url: `https://api.darksky.net/forecast/5b30c9a8f2a1996939817d496865c2eb/${lat},${lon}`,
+    url: `https://stark-dawn-64113.herokuapp.com/weather/index`,
     type: 'GET',
     cache: false,
+    data: {lat: lat, lon: lon},
   }).done(function(server_data){
     console.log("success" + server_data);
     weather = server_data;
