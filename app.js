@@ -2,7 +2,8 @@
 var lat;
 var lon;
 var weatherInfo;
-var temp;
+var tempF;
+var tempC;
 var windS;
 var humidT;
 var summary;
@@ -28,14 +29,14 @@ function getWeather() {
     console.log("success" + server_data);
     
     weather = server_data;
-    temp = server_data["currently"]["temperature"]
+    tempF = server_data["currently"]["temperature"]
     WindS = server_data["currently"]["windSpeed"]
     humidT = server_data["currently"]["humidity"]
     icon = server_data["currently"]["icon"]
     summary = server_data["currently"]["summary"]
     console.log(icon)
     skycons.set("icon1", Skycons[`${icon}`]);
-    debugger;
+    tempC = parseFloat(((tempF - 32)/1.8).toFixed(2));
     skycons.play();
   }).fail(function(jqXHR, textStatus, errorThrown){
     console.log("fail" + errorThrown);
