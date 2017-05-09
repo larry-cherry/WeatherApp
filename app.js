@@ -7,6 +7,7 @@ var windS;
 var humidT;
 var summary;
 var icon;
+var skycons = new Skycons({"color": "pink"});
 
 //Geolocation Options
 var options = {
@@ -25,12 +26,17 @@ function getWeather() {
     data: {lat: lat, lon: lon},
   }).done(function(server_data){
     console.log("success" + server_data);
+    
     weather = server_data;
     temp = server_data["currently"]["temperature"]
     WindS = server_data["currently"]["windSpeed"]
     humidT = server_data["currently"]["humidity"]
     icon = server_data["currently"]["icon"]
     summary = server_data["currently"]["summary"]
+    console.log(icon)
+    skycons.set("icon1", Skycons[`${icon}`]);
+    debugger;
+    skycons.play();
   }).fail(function(jqXHR, textStatus, errorThrown){
     console.log("fail" + errorThrown);
     return "There was an issue with your request please try again.";;
@@ -56,6 +62,5 @@ function error(err) {
 
 $(document).ready(function(){
   navigator.geolocation.getCurrentPosition(success, error, options);
-
 
 })
