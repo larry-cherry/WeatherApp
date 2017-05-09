@@ -2,7 +2,8 @@
 var lat;
 var lon;
 var weatherInfo;
-var temp;
+var tempF;
+var tempC;
 var windS;
 var humidT;
 var summary;
@@ -17,26 +18,24 @@ var options = {
 };
 
 // AJAX request for weather info
-function getWeather() {
-  
+function getWeather() {  
   $.ajax({
     url: `https://stark-dawn-64113.herokuapp.com/weather/index`,
     type: 'GET',
     cache: false,
     data: {lat: lat, lon: lon},
   }).done(function(server_data){
+    //If request is succesful data is assigned to values below.
     console.log("success" + server_data);
-    
     weather = server_data;
-    temp = server_data["currently"]["temperature"]
+    tempF = server_data["currently"]["temperature"]
     WindS = server_data["currently"]["windSpeed"]
     humidT = server_data["currently"]["humidity"]
     icon = server_data["currently"]["icon"]
     summary = server_data["currently"]["summary"]
-    console.log(icon)
-    skycons.set("icon1", Skycons[`${icon}`]);
-    debugger;
-    skycons.play();
+    console.log(icon);
+    tempC = parseFloat(((tempF - 32)/1.8).toFixed(2));
+    showWeather();
   }).fail(function(jqXHR, textStatus, errorThrown){
     console.log("fail" + errorThrown);
     return "There was an issue with your request please try again.";;
@@ -59,6 +58,13 @@ function success(pos) {
 function error(err) {
   console.warn(`ERROR(${err.code}): ${err.message}`);
 };
+
+//Once a AJAX request is succesful updates data on page 
+function showWeather() {
+  document.getElementById("summary").innerHTML = summary;
+  document.getElementById("temp").innerHTML = tempF;
+  skycons.set("icon", Skycons.PARTLY_CLOUDY_NIGHT);
+}
 
 $(document).ready(function(){
   navigator.geolocation.getCurrentPosition(success, error, options);
