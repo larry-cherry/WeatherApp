@@ -4,7 +4,19 @@ h1 {
 body {
   /*background-color: grey;*/
 }
+#weather-container {
+	border: 2px solid black;
+	border-radius: 10px;
+	width: 90%;
+	display: block;
+	margin: auto;
+	text-align: center;
+}
 
+#icon {
+	display: block;
+	margin: auto;
+}
 /*Lets start with the cloud formation rather*/
 
 /*The container will also serve as the SKY*/

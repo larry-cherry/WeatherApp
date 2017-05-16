@@ -8,7 +8,7 @@ var windS;
 var humidT;
 var summary;
 var icon;
-var skycons = new Skycons({"color": "pink"});
+var skycons = new Skycons({"color": "blue"});
 
 //Geolocation Options
 var options = {
@@ -29,7 +29,7 @@ function getWeather() {
     console.log("success" + server_data);
     weather = server_data;
     tempF = server_data["currently"]["temperature"]
-    WindS = server_data["currently"]["windSpeed"]
+    windS = server_data["currently"]["windSpeed"]
     humidT = server_data["currently"]["humidity"]
     icon = server_data["currently"]["icon"]
     summary = server_data["currently"]["summary"]
@@ -57,13 +57,32 @@ function success(pos) {
 //only runs if error occurs
 function error(err) {
   console.warn(`ERROR(${err.code}): ${err.message}`);
+  console.log('Attempting to acquire location based on IP address')
+  locationByIP();
 };
 
-//Once a AJAX request is succesful updates data on page 
+//Once a AJAX request is succesful updates data on page
 function showWeather() {
   document.getElementById("summary").innerHTML = summary;
-  document.getElementById("temp").innerHTML = tempF;
-  skycons.set("icon", Skycons.PARTLY_CLOUDY_NIGHT);
+  document.getElementById("temp").innerHTML = `Tempurature ${tempF} F`;
+  document.getElementById("humidT").innerHTML = `Humidity: ${humidT}`
+  document.getElementById("windS").innerHTML = `Wind Speed: ${windS}`
+  skycons.set("icon", icon)
+  skycons.play();
+}
+
+//If Geolocation is not availible this is an alternate for acquiring location
+function locationByIP() {
+  $.ajax({
+    url: `http://ip-api.com/json`,
+    type: 'GET',
+    cache: false,
+  }).done(function(server_data){
+    console.log(server_data)
+    lat = server_data["lat"].toFixed(2)
+    lon = server_data["lon"].toFixed(2)
+    getWeather();
+  })
 }
 
 $(document).ready(function(){
