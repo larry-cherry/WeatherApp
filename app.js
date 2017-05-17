@@ -23,7 +23,6 @@ function getWeather() {
   if (!!lat || !!lon) {
     data = {lat: lat, lon: lon}
   }  
-  debugger;
   $.ajax({
     url: `https://stark-dawn-64113.herokuapp.com/weather/index`,
     type: 'GET',
@@ -49,7 +48,6 @@ function getWeather() {
 
 //If coordinates are pulled succesfully
 function success(pos) {
-  debugger;
   var crd = pos.coords;
   lat = Number((crd.latitude).toFixed(2));
   lon = Number((crd.longitude).toFixed(2));
