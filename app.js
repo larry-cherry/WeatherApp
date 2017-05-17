@@ -18,12 +18,17 @@ var options = {
 };
 
 // AJAX request for weather info
-function getWeather() {  
+function getWeather() {
+  var data;
+  if (!!lat || !!lon) {
+    data = {lat: lat, lon: lon}
+  }  
+  debugger;
   $.ajax({
     url: `https://stark-dawn-64113.herokuapp.com/weather/index`,
     type: 'GET',
     cache: false,
-    data: {lat: lat, lon: lon},
+    data: data,
   }).done(function(server_data){
     //If request is succesful data is assigned to values below.
     console.log("success" + server_data);
@@ -44,6 +49,7 @@ function getWeather() {
 
 //If coordinates are pulled succesfully
 function success(pos) {
+  debugger;
   var crd = pos.coords;
   lat = Number((crd.latitude).toFixed(2));
   lon = Number((crd.longitude).toFixed(2));
@@ -58,7 +64,8 @@ function success(pos) {
 function error(err) {
   console.warn(`ERROR(${err.code}): ${err.message}`);
   console.log('Attempting to acquire location based on IP address')
-  locationByIP();
+  // locationByIP();
+  getWeather();
 };
 
 //Once a AJAX request is succesful updates data on page
@@ -69,20 +76,6 @@ function showWeather() {
   document.getElementById("windS").innerHTML = `Wind Speed: ${windS}`
   skycons.set("icon", icon)
   skycons.play();
-}
-
-//If Geolocation is not availible this is an alternate for acquiring location
-function locationByIP() {
-  $.ajax({
-    url: `http://ip-api.com/json`,
-    type: 'GET',
-    cache: false,
-  }).done(function(server_data){
-    console.log(server_data)
-    lat = server_data["lat"].toFixed(2)
-    lon = server_data["lon"].toFixed(2)
-    getWeather();
-  })
 }
 
 $(document).ready(function(){
