@@ -32,13 +32,13 @@ function getWeather() {
     //If request is succesful data is assigned to values below.
     console.log("success" + server_data);
     weather = server_data;
-    tempF = server_data["currently"]["temperature"];
+    tempF = (server_data["currently"]["temperature"]).toFixed(1);
     windS = server_data["currently"]["windSpeed"];
     humidT = server_data["currently"]["humidity"] * 100;
     icon = server_data["currently"]["icon"];
     summary = server_data["currently"]["summary"];
     console.log(icon);
-    tempC = parseFloat(((tempF - 32)/1.8).toFixed(2));
+    tempC = parseFloat(((tempF - 32)/1.8).toFixed(1));
     showWeather();
   }).fail(function(jqXHR, textStatus, errorThrown){
     console.log("fail" + errorThrown);
@@ -62,16 +62,15 @@ function success(pos) {
 function error(err) {
   console.warn(`ERROR(${err.code}): ${err.message}`);
   console.log('Attempting to acquire location based on IP address')
-  // locationByIP();
   getWeather();
 };
 
 //Once a AJAX request is succesful updates data on page
 function showWeather() {
   document.getElementById("summary").innerHTML = summary;
-  document.getElementById("temp").innerHTML = `Tempurature ${tempF} F`;
+  document.getElementById("temp").innerHTML = `Temperature ${tempF} F`;
   document.getElementById("tempConvert").classList.add("fahrenheit");
-  document.getElementById("humidT").innerHTML = `Humidity: ${humidT}%`
+  document.getElementById("humidT").innerHTML = `Humidity: ${humidT.toFixed(0)}%`
   document.getElementById("windS").innerHTML = `Wind Speed: ${windS} mi/h`
   skycons.set("icon", icon)
   skycons.play();

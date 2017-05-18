@@ -17,10 +17,28 @@ h1 {
 }
 
 body {
+	font-size: 2em;
+	font-family: 'Baloo', cursive;
 	overflow: hidden;
 	padding: 100px 0;
 	background: #c9dbe9;
 	background: -webkit-linear-gradient(top, #c9dbe9 0%, #fff 100%);
 	background: -linear-gradient(top, #c9dbe9 0%, #fff 100%);
 	background: -moz-linear-gradient(top, #c9dbe9 0%, #fff 100%);
+}
+
+#tempConvert {
+	border-radius: 5px;
+	color: white;
+	background-color: blue;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+}
+
+#tempConvert:hover {
+	background: white;
+	color: blue;
 }
