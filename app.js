@@ -32,11 +32,11 @@ function getWeather() {
     //If request is succesful data is assigned to values below.
     console.log("success" + server_data);
     weather = server_data;
-    tempF = server_data["currently"]["temperature"]
-    windS = server_data["currently"]["windSpeed"]
-    humidT = server_data["currently"]["humidity"]
-    icon = server_data["currently"]["icon"]
-    summary = server_data["currently"]["summary"]
+    tempF = server_data["currently"]["temperature"];
+    windS = server_data["currently"]["windSpeed"];
+    humidT = server_data["currently"]["humidity"] * 100;
+    icon = server_data["currently"]["icon"];
+    summary = server_data["currently"]["summary"];
     console.log(icon);
     tempC = parseFloat(((tempF - 32)/1.8).toFixed(2));
     showWeather();
@@ -70,13 +70,31 @@ function error(err) {
 function showWeather() {
   document.getElementById("summary").innerHTML = summary;
   document.getElementById("temp").innerHTML = `Tempurature ${tempF} F`;
-  document.getElementById("humidT").innerHTML = `Humidity: ${humidT}`
-  document.getElementById("windS").innerHTML = `Wind Speed: ${windS}`
+  document.getElementById("tempConvert").classList.add("fahrenheit");
+  document.getElementById("humidT").innerHTML = `Humidity: ${humidT}%`
+  document.getElementById("windS").innerHTML = `Wind Speed: ${windS} mi/h`
   skycons.set("icon", icon)
   skycons.play();
+  document.getElementById("tempConvert").classList.remove("hidden")
+}
+//This function will convert the temp on the webpage
+function tempConvert() {
+  console.log("success")
+  if (this.classList.contains("fahrenheit")) {
+    document.getElementById("temp").innerHTML = `Tempurature ${tempC} C`;
+    this.classList.remove("fahrenheit");
+    this.classList.add("celsius");
+  }
+  else if (this.classList.contains("celsius")) {
+    document.getElementById("temp").innerHTML = `Tempurature ${tempF} F`;
+    this.classList.remove("celsius");
+    this.classList.add("fahrenheit");
+  } else {
+    this.innerHTML = `There was an issue with the conversion`;
+  }
 }
 
 $(document).ready(function(){
   navigator.geolocation.getCurrentPosition(success, error, options);
-
+  document.getElementById("tempConvert").addEventListener("click", tempConvert);
 })
